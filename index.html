@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Visit - Medical Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="row bg-primary text-white py-3 mb-4">
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">Patient Visit - Dr. Sarah Johnson</h4>
+                        <p class="mb-0">John Smith (DOB: 03/15/1985) | MRN: 12345678 | Visit: 12/15/2024</p>
+                    </div>
+                    <div class="text-end">
+                        <small>Room 204A</small><br>
+                        <small>Next: Jane Doe - 2:30 PM</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Risk Alert -->
+        <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+                <strong>AI Risk Alert:</strong> Patient shows high risk indicators for cardiovascular events. Consider immediate cardiac evaluation.
+            </div>
+        </div>
+
+        <!-- Patient Summary -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2 mb-3">Patient Summary</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Active Problems</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li><span class="badge bg-danger me-2">High</span>Hypertension</li>
+                                    <li><span class="badge bg-warning me-2">Moderate</span>Type 2 Diabetes</li>
+                                    <li><span class="badge bg-info me-2">Stable</span>Hyperlipidemia</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Allergies</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li><span class="badge bg-danger me-2">Severe</span>Penicillin - Anaphylaxis</li>
+                                    <li><span class="badge bg-warning me-2">Moderate</span>Shellfish - Hives</li>
+                                    <li><span class="badge bg-secondary me-2">Mild</span>Pollen - Rhinitis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Symptoms -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="mb-0">Patient Symptoms</h5>
+                    <button class="btn btn-primary btn-sm" onclick="showSymptomForm()">
+                        <i class="bi bi-plus"></i> Add New Symptom
+                    </button>
+                </div>
+                
+                <!-- Add Symptom Form -->
+                <div id="symptomForm" class="card mb-3" style="display: none;">
+                    <div class="card-body border-primary">
+                        <h6 class="card-title">Add New Symptom</h6>
+                        <form onsubmit="addSymptom(event)">
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label">Symptom Description</label>
+                                    <input type="text" class="form-control" id="symptomDescription" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Severity</label>
+                                    <select class="form-select" id="symptomSeverity" required>
+                                        <option value="">Select severity</option>
+                                        <option value="Mild">Mild</option>
+                                        <option value="Moderate">Moderate</option>
+                                        <option value="Severe">Severe</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Add Symptom</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideSymptomForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Symptoms Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Symptom</th>
+                                <th>Severity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="symptomsTableBody">
+                            <tr>
+                                <td>Chest pain</td>
+                                <td><span class="badge bg-danger">Severe</span></td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Shortness of breath</td>
+                                <td><span class="badge bg-warning">Moderate</span></td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnosis -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="mb-0">Diagnosis</h5>
+                    <button class="btn btn-primary btn-sm" onclick="showDiagnosisForm()">
+                        <i class="bi bi-plus"></i> Add Diagnosis
+                    </button>
+                </div>
+
+                <!-- Add Diagnosis Form -->
+                <div id="diagnosisForm" class="card mb-3" style="display: none;">
+                    <div class="card-body border-primary">
+                        <h6 class="card-title">Add New Diagnosis</h6>
+                        <form onsubmit="addDiagnosis(event)">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Diagnosis Code</label>
+                                    <select class="form-select" id="diagnosisCode" onchange="updateDiagnosisDescription()" required>
+                                        <option value="">Select diagnosis code</option>
+                                        <option value="I25.10" data-description="Atherosclerotic heart disease of native coronary artery without angina pectoris">I25.10</option>
+                                        <option value="E11.9" data-description="Type 2 diabetes mellitus without complications">E11.9</option>
+                                        <option value="I10" data-description="Essential hypertension">I10</option>
+                                        <option value="E78.5" data-description="Hyperlipidemia, unspecified">E78.5</option>
+                                        <option value="J44.1" data-description="Chronic obstructive pulmonary disease with acute exacerbation">J44.1</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-control" id="diagnosisDescription" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Doctor Notes</label>
+                                <textarea class="form-control" id="diagnosisNotes" rows="3" placeholder="Clinical observations and notes..."></textarea>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Add Diagnosis</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideDiagnosisForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Diagnosis Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Doctor Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="diagnosisTableBody">
+                            <tr>
+                                <td>I25.10</td>
+                                <td>Atherosclerotic heart disease of native coronary artery without angina pectoris</td>
+                                <td>Patient presents with typical symptoms, ECG changes noted</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab Reports -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="mb-0">Lab Reports</h5>
+                    <button class="btn btn-primary btn-sm" onclick="showLabForm()">
+                        <i class="bi bi-plus"></i> Add Lab Result
+                    </button>
+                </div>
+
+                <!-- Add Lab Form -->
+                <div id="labForm" class="card mb-3" style="display: none;">
+                    <div class="card-body border-primary">
+                        <h6 class="card-title">Add Lab Result</h6>
+                        <form onsubmit="addLabResult(event)">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Test Name</label>
+                                    <select class="form-select" id="labTestName" required>
+                                        <option value="">Select test</option>
+                                        <option value="Complete Blood Count (CBC)">Complete Blood Count (CBC)</option>
+                                        <option value="Basic Metabolic Panel">Basic Metabolic Panel</option>
+                                        <option value="Lipid Panel">Lipid Panel</option>
+                                        <option value="Hemoglobin A1C">Hemoglobin A1C</option>
+                                        <option value="Thyroid Function Tests">Thyroid Function Tests</option>
+                                        <option value="Liver Function Tests">Liver Function Tests</option>
+                                        <option value="Troponin I">Troponin I</option>
+                                        <option value="BNP">BNP</option>
+                                        <option value="Creatinine">Creatinine</option>
+                                        <option value="Glucose">Glucose</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Result</label>
+                                    <input type="text" class="form-control" id="labResult" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Reference Range</label>
+                                    <input type="text" class="form-control" id="labReference" required>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" id="labStatus" required>
+                                        <option value="">Select status</option>
+                                        <option value="Normal">Normal</option>
+                                        <option value="High">High</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Critical">Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Test Date</label>
+                                    <input type="date" class="form-control" id="labDate" required>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Add Result</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideLabForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lab Results Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Result</th>
+                                <th>Reference Range</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="labTableBody">
+                            <tr>
+                                <td>Troponin I</td>
+                                <td>0.8 ng/mL</td>
+                                <td>&lt; 0.04 ng/mL</td>
+                                <td><span class="badge bg-danger">Critical</span></td>
+                                <td>12/15/2024</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Hemoglobin A1C</td>
+                                <td>7.2%</td>
+                                <td>&lt; 7.0%</td>
+                                <td><span class="badge bg-warning">High</span></td>
+                                <td>12/10/2024</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prescriptions -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <h5 class="mb-0">Prescriptions</h5>
+                    <button class="btn btn-primary btn-sm" onclick="showPrescriptionForm()">
+                        <i class="bi bi-plus"></i> New Prescription
+                    </button>
+                </div>
+
+                <!-- Add Prescription Form -->
+                <div id="prescriptionForm" class="card mb-3" style="display: none;">
+                    <div class="card-body border-primary">
+                        <h6 class="card-title">New Prescription</h6>
+                        <form onsubmit="addPrescription(event)">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Medication</label>
+                                    <input type="text" class="form-control" id="prescriptionMedication" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Dosage</label>
+                                    <input type="text" class="form-control" id="prescriptionDosage" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Frequency</label>
+                                    <select class="form-select" id="prescriptionFrequency" required>
+                                        <option value="">Select frequency</option>
+                                        <option value="Once daily">Once daily</option>
+                                        <option value="Twice daily">Twice daily</option>
+                                        <option value="Three times daily">Three times daily</option>
+                                        <option value="Four times daily">Four times daily</option>
+                                        <option value="As needed">As needed</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Duration</label>
+                                    <input type="text" class="form-control" id="prescriptionDuration" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Instructions</label>
+                                <textarea class="form-control" id="prescriptionInstructions" rows="2" placeholder="Special instructions for patient..."></textarea>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Add Prescription</button>
+                                <button type="button" class="btn btn-secondary" onclick="hidePrescriptionForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Prescriptions Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Medication</th>
+                                <th>Dosage</th>
+                                <th>Frequency</th>
+                                <th>Duration</th>
+                                <th>Instructions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prescriptionTableBody">
+                            <tr>
+                                <td>Metformin</td>
+                                <td>500mg</td>
+                                <td>Twice daily</td>
+                                <td>30 days</td>
+                                <td>Take with meals</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Lisinopril</td>
+                                <td>10mg</td>
+                                <td>Once daily</td>
+                                <td>30 days</td>
+                                <td>Take in morning</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex gap-3 justify-content-end">
+                    <button class="btn btn-outline-secondary">Save Draft</button>
+                    <button class="btn btn-success">Complete Visit</button>
+                    <button class="btn btn-primary">Print Summary</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
